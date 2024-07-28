@@ -9,7 +9,6 @@ def thres_checkQB(x, y, pred, cost, subword_len, threshold):
         return False
     return cost / (subword_len) < threshold
 
-from string import punctuation
 def thres_checkGPT2(x, y, pred, cost, subword_len, threshold):
     if(subword_len=='-'):
         return False
