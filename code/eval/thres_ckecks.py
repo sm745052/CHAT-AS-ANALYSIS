@@ -1,6 +1,8 @@
 def thres_checkQB(x, y, pred, cost, subword_len, threshold):
     if(subword_len=='-'):
         return False
+    if(len(y)==0):
+        return False
     cost = float(cost)
     subword_len = float(subword_len)
     if(pred == ""):
@@ -10,7 +12,7 @@ def thres_checkQB(x, y, pred, cost, subword_len, threshold):
     return cost / (subword_len) < threshold
 
 def thres_checkGPT2(x, y, pred, cost, subword_len, threshold):
-    if(subword_len=='-'):
+    if(subword_len=='-' or cost=='-'):
         return False
     cost = float(cost)
     subword_len = float(subword_len)
@@ -23,7 +25,7 @@ def thres_checkGPT2(x, y, pred, cost, subword_len, threshold):
 
 
 def thres_checkMPC(x, y, pred, cost, subword_len, threshold):
-    if(subword_len=='-'):
+    if(subword_len=='-' or pred=='-'):
         return False
     if(pred==""):
         return False

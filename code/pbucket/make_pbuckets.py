@@ -9,8 +9,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_folder", type=str, default="../anal/outputs")
     parser.add_argument("--output_folder", type=str, default="Poutputs")
+    parser.add_argument("--prune", type=str, default="na")
     args = parser.parse_args()
-    files = [i for i in os.listdir(args.input_folder) if "all" in i]
+    files = os.listdir(args.input_folder)
+    if(args.prune != "na"):
+        files = [i for i in files if args.prune in i]
     for i in tqdm(files):
         p_buckets = [[] for i in _prefix_bucket_ranges]
         with open(os.path.join(args.input_folder, i), "r") as f:
@@ -27,6 +30,7 @@ if __name__ == "__main__":
                         p_buckets[idx].append(line)
                         break
         for idx, bucket in enumerate(p_buckets):
-            with open(os.path.join(args.output_folder, (i.replace(".all", ".PB{}".format(idx)))), "w") as f:
+            to_name = i.replace(".all", ".PBa{}".format(idx)).replace(".unseen", ".PBu{}".format(idx)).replace(".seen", ".PBs{}".format(idx))
+            with open(os.path.join(args.output_folder, to_name), "w") as f:
                 for line in bucket:
                     f.write("\t".join(line) + "\n")

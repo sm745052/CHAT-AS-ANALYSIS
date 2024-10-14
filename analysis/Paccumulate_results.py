@@ -53,15 +53,15 @@ def get(args):
 
 def get_row(args):
     args.tr = 'max'
-    args.type = "PB0"
+    args.type = "PB" + args.t + "0"
     df1 = get(args)
     df1.columns = [i + " " + args.type + " " + args.tr for i in df1.columns]
     combined1 = df1
-    args.type = "PB1"
+    args.type = "PB" + args.t + "1"
     df2 = get(args)
     df2.columns = [i + " " + args.type + " " + args.tr for i in df2.columns]
     combined2 = df2
-    args.type = "PB2"
+    args.type = "PB" + args.t + "2"
     df3 = get(args)
     df3.columns = [i + " " + args.type + " " + args.tr for i in df3.columns]
     combined3 = df3
@@ -101,6 +101,7 @@ if __name__ == '__main__':
         GPT4
     """
     args.add_argument('--d', type=str, default='ddc')
+    args.add_argument('--t', type=str, required='s')
     args = args.parse_args()
     models = ['qb', 'mpc', 'mpc.suffix', 't5', 'gpt2.sloss', 'renee', 'mistral.prompt.word2', 'phi.prompt.word10', 'phi.finetune.word3', 'gpt4']
     data = [args.d, 'c' + args.d]
@@ -132,6 +133,6 @@ if __name__ == '__main__':
         index.append(d + " " + m)
     df.index = index
     if(args.d == 'ddc'):
-        df.to_csv("Pddc.csv", sep=';')
+        df.to_csv("Pddc{}.csv".format(args.t), sep=';')
     else:
-        df.to_csv("Pdstc7.csv", sep=';')
+        df.to_csv("Pdstc7{}.csv".format(args.t), sep=';')

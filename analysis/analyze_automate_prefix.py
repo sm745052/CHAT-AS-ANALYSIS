@@ -26,26 +26,16 @@ def model_map(x):
     raise Exception("model not found")
 
 
-no_graphs = ['mpc', 'mpc.suffix', 'gpt4', 'renee']
 
 def execute(ob):
-    csv_file = ob['outfile'].replace("out.", "result.")+".csv"
+    csv_file = ob['outfile'].replace("out.", "result.prefix.")+".csv"
     csv_file = csv_file.replace("outputs", "results")
     graph_folder = ob['outfile'].replace("out.", "").replace(".", "_").replace("outputs", "results")
     print("graph folder is ", graph_folder)
     if(not os.path.exists(graph_folder)):
         os.makedirs(graph_folder)
-    os.system("python code/eval/eval_n.py --input {} --output {} --model {}".format(ob['outfile'], csv_file, model_map(ob['model'])))
-    if(ob['model'] not in no_graphs):
-        os.system("python analysis/graphs.py --eval_file {} --result_file {} --output_dir {}".format(ob['outfile'], csv_file, graph_folder))
-    df = pd.read_csv(csv_file, sep=';')
-    # get the row with max f1
-    # max_f1_row = df[df['F1'] == df['F1'].max()]
-    max_trigger_rate_row = df[df['trigger_rate'] == df['trigger_rate'].max()]
-    thres = max_trigger_rate_row['thres'].values[0]
-    with open(graph_folder+"/best_thres.txt", 'w') as f:
-        f.write("{}".format(thres))
-    print("best thres for ", ob['outfile'], " is ", thres)
+    os.system("python code/eval/eval_p.py --input {} --output {} --model {}".format(ob['outfile'], csv_file, model_map(ob['model'])))
+    os.system("python analysis/prefix_graphs.py --input {} --output_dir {}".format(csv_file, graph_folder))
 
 
 if __name__ =='__main__':

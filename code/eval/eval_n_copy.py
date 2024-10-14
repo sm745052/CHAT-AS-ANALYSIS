@@ -309,7 +309,7 @@ def main():
         results[idx]["tes"] = np.nanmean(tes.run(thres)[:, 0])
     # results = [i.compute() for i in prefix_buckets]
     # print(results[-1])
-    with open(args.output, "w") as f:
+    with open(args.output, "w+") as f:
         f.write(
             "thres;trigger_rate;synctatic_match;F1;partial_recall;partial_precision;synctatic_match_100tr;partial_recall_100tr;partial_precision_100tr;avg_pred_length;tes;avg_matched_prefix\n"
         )
